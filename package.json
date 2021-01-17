@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/redspirit/pic2array#readme",
   "dependencies": {
+    "jimp": "^0.16.1",
     "minimist": "^1.2.5"
   }
 }
