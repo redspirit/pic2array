@@ -1,0 +1,22 @@
+{
+  "name": "pic2array",
+  "version": "1.0.0",
+  "description": "Convert any image to c array using R3G3B2 8-bit pallete",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/redspirit/pic2array.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/redspirit/pic2array/issues"
+  },
+  "homepage": "https://github.com/redspirit/pic2array#readme",
+  "dependencies": {
+    "minimist": "^1.2.5"
+  }
+}
