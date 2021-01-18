@@ -1,17 +1,20 @@
 
 const argv = require('minimist')(process.argv.slice(2));
 const Jimp = require('jimp');
+const fs = require('fs');
 
 if(!argv._[0]) {
     return console.log(`Помощь:
 Укажите имя картинки для обработки pic2array.js imagename.{jpg|png|bmp|gif}
 Доступные опции:
 -o генерировать рядом с оригинальным изображением картинку с новой палитрой
--c выводить содержимое массива в stdout`);
+-c выводить содержимое массива в stdout
+--limit {n} лимит массива в байтах`);
 }
 
 let imagePath = __dirname + '/' + argv._[0];
 let imageArray = [];
+let limit = +argv['limit'] || 76800;
 
 let generateImage = argv['o'];
 let outputResult = argv['c'];
@@ -49,9 +52,28 @@ Jimp.read(imagePath, (err, image) => {
         image.write(imagePath + '.converted.png');
     }
 
-    console.log(imageArray.map(item => {
-        return '0x' + item.toString(16).toUpperCase();
-    }));
+    let arrayContent = `const unsigned char img_data[] PROGMEM={ \n`;
+
+    let i = 0;
+    imageArray.length = limit;
+    arrayContent += imageArray.map(item => {
+        let sep = '';
+        if(i === 30) {
+            i = 0;
+            sep = '\n'
+        }
+        i++;
+        return '0x' + item.toString(16).toUpperCase() + sep;
+    }).join();
+    arrayContent += `\n};`;
+
+    if(outputResult) {
+        console.log(arrayContent);
+    } else {
+        let arrayFile = imagePath + '.array.txt';
+        fs.writeFileSync(arrayFile, arrayContent);
+        console.log('Файл записан:' + arrayFile);
+    }
 
 });
 
